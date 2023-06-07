@@ -1,4 +1,4 @@
-require './spec_helper'
+require './spec/spec_helper'
 
 
 RSpec.describe 'StatTracker' do
@@ -14,7 +14,6 @@ RSpec.describe 'StatTracker' do
     }
 
     @stat_tracker = StatTracker.from_csv(locations)
-    require 'pry'; binding.pry
   end
 
   it 'exists' do
