@@ -73,6 +73,7 @@ class StatTracker
       game_team.result == "TIE"
     end
     (ties.count.to_f / @game_teams.count).round(2)
+  end
 
   def count_of_games_by_season
     seasons = games.map {|game| game.season}
