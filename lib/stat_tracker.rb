@@ -54,4 +54,8 @@ class StatTracker
     total.away_goals.to_i + total.home_goals.to_i
   end
   
+  def count_of_games_by_season
+    seasons = games.map {|game| game.season}
+    seasons.tally
+  end
 end
