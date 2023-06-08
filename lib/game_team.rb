@@ -1,13 +1,13 @@
 class GameTeam
-  # attr_reader :game_id, 
-  #             :team_, 
-  #             :type, 
-  #             :date_time, 
-  #             :away_team_id,
-  #             :home_team_id,
-  #             :away_goals,
-  #             :home_goals,
-  #             :venue
+  attr_reader :game_id, 
+              :team_, 
+              :type, 
+              :date_time, 
+              :away_team_id,
+              :home_team_id,
+              :away_goals,
+              :home_goals,
+              :venue
   
   def initialize(game_id, 
                 team_id, 

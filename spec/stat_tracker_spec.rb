@@ -17,6 +17,15 @@ RSpec.describe 'StatTracker' do
   end
 
   it 'exists' do
-    expect(@stat_tracker).to be_an_instance_of(Hash)
+    expect(@stat_tracker).to be_an_instance_of(StatTracker)
   end
+
+  it 'can generate arrays of objects from CSVs' do
+    expect(@stat_tracker.games.first).to be_a(Game)
+    expect(@stat_tracker.teams.first).to be_a(Team)
+    expect(@stat_tracker.game_teams.first).to be_a(GameTeam)
+    expect(@stat_tracker.games).to include(an_object_having_attributes(game_id: "2012030221"))
+  end
+
+  
 end
