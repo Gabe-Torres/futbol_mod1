@@ -28,6 +28,6 @@ RSpec.describe 'StatTracker' do
   end
 
   it 'can generate the highest total game score' do
-    expect(@stat_tracker.highest_game_score).to be_a(Integer)
+    expect(@stat_tracker.highest_total_score).to eq(11)
   end
 end
