@@ -54,6 +54,10 @@ class StatTracker
     total.away_goals.to_i + total.home_goals.to_i
   end
   
+  def count_of_games_by_season
+    seasons = games.map {|game| game.season}
+    seasons.tally
+  end
   def percentage_home_wins 
     home_wins = @game_teams.find_all do |game_team|
       game_team.hoa == "home" && game_team.result == "WIN"
