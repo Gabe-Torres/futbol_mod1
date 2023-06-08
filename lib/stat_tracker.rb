@@ -17,7 +17,7 @@ class StatTracker
     stat_tracker.game_generator(locations)
     stat_tracker.teams_generator(locations)
     stat_tracker.game_teams_generator(locations)
-    return stat_tracker
+    stat_tracker
   end
   
   # helper methods
