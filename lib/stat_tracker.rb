@@ -60,4 +60,18 @@ class StatTracker
     end
     (home_wins.count.to_f / @games.count).round(2)
   end
+
+  def percentage_visitor_wins 
+    visitor_wins = @game_teams.find_all do |game_team|
+      game_team.hoa == "away" && game_team.result == "WIN"
+    end
+    (visitor_wins.count.to_f / @games.count).round(2)
+  end
+
+  def percentage_ties
+    ties = @game_teams.find_all do |game_team|
+      game_team.result == "TIE"
+    end
+    (ties.count.to_f / @game_teams.count).round(2)
+  end
 end
