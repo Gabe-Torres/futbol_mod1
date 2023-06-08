@@ -79,4 +79,11 @@ class StatTracker
     seasons.tally
 
   end
+
+  def average_goals_per_game
+    per_game_average = games.map do |game|
+      game.away_goals.to_f + game.home_goals.to_f
+    end
+    average = (per_game_average.sum / per_game_average.size).round(2)
+  end
 end
