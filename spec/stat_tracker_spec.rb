@@ -27,5 +27,7 @@ RSpec.describe 'StatTracker' do
     expect(@stat_tracker.games).to include(an_object_having_attributes(game_id: "2012030221"))
   end
 
-  
+  it 'can generate the highest total game score' do
+    expect(@stat_tracker.highest_game_score).to be_a(Integer)
+  end
 end
