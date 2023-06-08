@@ -73,6 +73,7 @@ class StatTracker
       game_team.result == "TIE"
     end
     (ties.count.to_f / @game_teams.count).round(2)
+  end
 
   def count_of_games_by_season
     seasons = games.map {|game| game.season}
@@ -85,5 +86,9 @@ class StatTracker
       game.away_goals.to_f + game.home_goals.to_f
     end
     average = (per_game_average.sum / per_game_average.size).round(2)
+  end
+
+  def count_of_teams
+    @teams.count
   end
 end
