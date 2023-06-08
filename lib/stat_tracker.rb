@@ -40,4 +40,24 @@ class StatTracker
     end
   end
   
+  def highest_total_score
+    #@games to find all game scores and pick out the highest total score
+    
+    
+    # total = []
+    # @games.each do |game|
+    #   p game.game_id if game.away_goals.to_i + game.home_goals.to_i == 11
+    #   total << game.away_goals.to_i + game.home_goals.to_i
+    # end
+    # total.find do |score|
+    #   score == 11
+    # end
+
+    
+    total = @games.max_by do |game|
+      game.away_goals.to_i + game.home_goals.to_i
+    end
+    total.away_goals.to_i + total.home_goals.to_i
+  end
+  
 end
