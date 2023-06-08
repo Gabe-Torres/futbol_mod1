@@ -54,10 +54,6 @@ class StatTracker
     total.away_goals.to_i + total.home_goals.to_i
   end
   
-  def count_of_games_by_season
-    seasons = games.map {|game| game.season}
-    seasons.tally
-  end
   def percentage_home_wins 
     home_wins = @game_teams.find_all do |game_team|
       game_team.hoa == "home" && game_team.result == "WIN"
@@ -77,5 +73,17 @@ class StatTracker
       game_team.result == "TIE"
     end
     (ties.count.to_f / @game_teams.count).round(2)
+
+  def count_of_games_by_season
+    seasons = games.map {|game| game.season}
+    seasons.tally
+
+  end
+
+  def average_goals_per_game
+    per_game_average = games.map do |game|
+      game.away_goals.to_f + game.home_goals.to_f
+    end
+    average = (per_game_average.sum / per_game_average.size).round(2)
   end
 end
