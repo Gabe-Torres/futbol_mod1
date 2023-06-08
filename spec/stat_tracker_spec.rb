@@ -40,6 +40,23 @@ RSpec.describe 'StatTracker' do
     end
   end
 
+
+  describe '#percentage_home_wins' do 
+    it "can get percentages of home wins" do
+      expect(@stat_tracker.percentage_home_wins).to eq 0.44
+    end
+  end
+
+  describe '#percentage_visitor_wins' do 
+    it "can get percentages of visitor wins" do
+      expect(@stat_tracker.percentage_visitor_wins).to eq 0.36
+    end
+  end
+
+  describe '#percentage_ties' do
+    it "can get percentages of ties" do
+      expect(@stat_tracker.percentage_ties).to eq 0.20
+
   describe '#count_of_games_by_season' do
     it 'return a hash of total games by season' do
       expected = {
