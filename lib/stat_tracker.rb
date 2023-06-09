@@ -78,7 +78,6 @@ class StatTracker
   def count_of_games_by_season
     seasons = games.map {|game| game.season}
     seasons.tally
-
   end
 
   def average_goals_per_game
@@ -86,5 +85,20 @@ class StatTracker
       game.away_goals.to_f + game.home_goals.to_f
     end
     average = (per_game_average.sum / per_game_average.size).round(2)
+  end
+
+  def average_goals_by_season
+    hash = {}
+    games.each do |game|
+      if hash[game.season]
+        hash[game.season] << game.home_goals.to_i + game.away_goals.to_i
+      else
+        hash[game.season] = [game.home_goals.to_i + game.away_goals.to_i]
+      end
+    end
+    hash.each do |key, value|
+      average = (value.sum / value.size.to_f).round(2)
+      hash[key] = average
+    end
   end
 end
