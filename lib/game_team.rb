@@ -10,7 +10,8 @@ class GameTeam
               :venue, 
               :hoa, 
               :result,
-              :goals
+              :goals,
+              :tackles
   
   def initialize(game_id, 
                 team_id, 
