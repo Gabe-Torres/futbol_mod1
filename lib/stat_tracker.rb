@@ -24,6 +24,7 @@ class StatTracker
   
   def game_generator(locations)
     CSV.foreach locations[:games], headers: true, header_converters: :symbol do |row|
+      # could just send in the whole row and then pull out what is needed in the def initialize in Game
       @games << Game.new(row[:game_id], row[:season], row[:type], row[:date_time], row[:away_team_id], row[:home_team_id], row[:away_goals], row[:home_goals], row[:venue])
     end
   end
@@ -110,4 +111,47 @@ class StatTracker
   def count_of_teams
     @teams.count
   end
+
+  def best_offense
+    team_hash = {}
+    @game_teams.each do |game|
+      if team_hash[game.team_id] == nil
+        team_hash[game.team_id] = [game.goals]
+      else
+        team_hash[game.team_id] += [game.goals]
+      end
+    end
+    
+    team_hash.map do |team, games|
+      team_hash[team] = [(games.map { |game| game.to_f }.sum) / games.count]
+    end
+    
+    best_offense_team_id = team_hash.max_by do |team, avg_goals|
+      avg_goals
+    end[0]
+
+    @teams.find { |team| team.team_id == best_offense_team_id }.team_name
+  end
+
+  def worst_offense
+    team_hash = {}
+    @game_teams.each do |game|
+      if team_hash[game.team_id] == nil
+        team_hash[game.team_id] = [game.goals]
+      else
+        team_hash[game.team_id] += [game.goals]
+      end
+    end
+    
+    team_hash.map do |team, games|
+      team_hash[team] = [(games.map { |game| game.to_f }.sum) / games.count]
+    end
+    
+    worst_offense_team_id = team_hash.min_by do |team, avg_goals|
+      avg_goals
+    end[0]
+
+    @teams.find { |team| team.team_id == worst_offense_team_id }.team_name
+  end
+  
 end
