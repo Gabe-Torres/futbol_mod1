@@ -125,6 +125,23 @@ class StatTracker
     average_and_lookup(tally_scores, :max)
   end
 
+  def lowest_scoring_visitor
+    tally_scores = Hash.new {|h, k| h[k] = [] }
+    games.each do |game|
+      tally_scores[game.away_team_id] <<  game.away_goals.to_i
+    end
+    average_and_lookup(tally_scores, :min)
+  end
+  
+  def lowest_scoring_home_team 
+    tally_scores = Hash.new {|h, k| h[k] = [] }
+    games.each do |game|
+      tally_scores[game.home_team_id] <<  game.home_goals.to_i
+    end
+    average_and_lookup(tally_scores, :min)
+  end
+
+  ### HELPER FUNCTION ###
   def average_and_lookup(tally_scores, selector)
     tally_scores.each do |key, value|
       tally_scores[key] = (value.sum / value.size.to_f).round(2)
@@ -137,13 +154,4 @@ class StatTracker
     end
     selected_team.team_name
   end
-
-  def lowest_scoring_visitor
-    tally_scores = Hash.new {|h, k| h[k] = [] }
-    games.each do |game|
-      tally_scores[game.away_team_id] <<  game.away_goals.to_i
-    end
-    average_and_lookup(tally_scores, :min)
-  end
-
 end
