@@ -11,9 +11,9 @@ class Team
                 abbreviation, 
                 stadium)
   
-  @team_id = team_id
-  @franchise_id = franchiseid
-  @team_name = teamname
-  @abbreviation = abbreviation
+    @team_id = team_id
+    @franchise_id = franchiseid
+    @team_name = teamname
+    @abbreviation = abbreviation
   end
 end
