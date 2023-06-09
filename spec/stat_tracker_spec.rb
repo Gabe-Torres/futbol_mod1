@@ -7,19 +7,21 @@ RSpec.describe 'StatTracker' do
     team_path = './data/teams.csv'
     game_teams_path = './data/game_teams.csv'
 
-    locations = {
+    @locations = {
       games: game_path,
       teams: team_path,
       game_teams: game_teams_path
     }
 
-    @stat_tracker = StatTracker.from_csv(locations)
+    @stat_tracker = StatTracker.from_csv(@locations)
   end
 
   describe '#initialize' do
     it 'exists' do
+      expect(StatTracker.from_csv(@locations)).to be_a(StatTracker)
       expect(@stat_tracker).to be_an_instance_of(StatTracker)
     end
+    
     it 'can generate arrays of objects from CSVs' do
       expect(@stat_tracker.games.first).to be_a(Game)
       expect(@stat_tracker.teams.first).to be_a(Team)
@@ -79,6 +81,7 @@ RSpec.describe 'StatTracker' do
     end
   end
 
+
   describe '#average_' do
     it "#average_goals_by_season" do
       expected = {
@@ -92,4 +95,8 @@ RSpec.describe 'StatTracker' do
       expect(@stat_tracker.average_goals_by_season).to eq expected
     end
   end
+  
+  describe '#count_of_teams' do
+    it 'can count the total number of teams in the league' do
+      expect(@stat_tracker.count_of_teams).to eq 32
 end

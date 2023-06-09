@@ -100,5 +100,8 @@ class StatTracker
       average = (value.sum / value.size.to_f).round(2)
       hash[key] = average
     end
+    
+  def count_of_teams
+    @teams.count
   end
 end
