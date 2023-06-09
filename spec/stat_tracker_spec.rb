@@ -102,6 +102,7 @@ RSpec.describe 'StatTracker' do
     end
   end
 
+
   describe '#highest_scoring_visitor' do
     it 'can return highest scoring visitor team' do
       expect(@stat_tracker.highest_scoring_visitor).to eq "FC Dallas"
@@ -123,6 +124,18 @@ RSpec.describe 'StatTracker' do
   describe '#lowest_scoring_home_team' do
     it "returns the name of the lowest scoring home team" do
       expect(@stat_tracker.lowest_scoring_home_team).to eq "Utah Royals FC"
+    end
+  end
+
+  describe '#best_offense' do
+    it "can return the name of the team with the highest average number of goals" do
+      expect(@stat_tracker.best_offense).to eq "Reign FC"
+    end
+  end
+
+  describe '#worst_offense' do
+    it "can return the name of the team with the highest average number of goals" do
+      expect(@stat_tracker.worst_offense).to eq "Utah Royals FC"
     end
   end
 end
