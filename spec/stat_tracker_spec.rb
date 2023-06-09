@@ -119,4 +119,10 @@ RSpec.describe 'StatTracker' do
       expect(@stat_tracker.lowest_scoring_visitor).to eq "San Jose Earthquakes"
     end
   end
+
+  describe '#lowest_scoring_home_team' do
+    it "returns the name of the lowest scoring home team" do
+      expect(@stat_tracker.lowest_scoring_home_team).to eq "Utah Royals FC"
+    end
+  end
 end
