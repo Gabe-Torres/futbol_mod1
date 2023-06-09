@@ -85,6 +85,10 @@ class StatTracker
     seasons = games.map {|game| game.season}
     seasons.tally
   end
+
+  def count_of_teams
+    @teams.count
+  end
   
   def average_goals_per_game
     per_game_average = games.map do |game|
@@ -94,22 +98,62 @@ class StatTracker
   end
   
   def average_goals_by_season
-    hash = {}
+    all_goals = Hash.new {|h, k| h[k] = [] }
     games.each do |game|
-      if hash[game.season]
-        hash[game.season] <<  sum_of_goals(game)
-      else
-        hash[game.season] = [sum_of_goals(game)]
-      end
+      all_goals[game.season] <<  sum_of_goals(game)
     end
-    hash.each do |key, value|
+
+    all_goals.each do |key, value|
       average = (value.sum / value.size.to_f).round(2)
-      hash[key] = average
+      all_goals[key] = average
     end
   end
     
-  def count_of_teams
-    @teams.count
+
+  def highest_scoring_visitor
+    tally_scores = Hash.new {|h, k| h[k] = [] }
+    games.each do |game|
+      tally_scores[game.away_team_id] <<  game.away_goals.to_i
+    end
+    average_and_lookup(tally_scores, :max)
+  end
+
+  def highest_scoring_home_team
+    tally_scores = Hash.new {|h, k| h[k] = [] }
+    games.each do |game|
+      tally_scores[game.home_team_id] <<  game.home_goals.to_i
+    end
+    average_and_lookup(tally_scores, :max)
+  end
+
+  def lowest_scoring_visitor
+    tally_scores = Hash.new {|h, k| h[k] = [] }
+    games.each do |game|
+      tally_scores[game.away_team_id] <<  game.away_goals.to_i
+    end
+    average_and_lookup(tally_scores, :min)
+  end
+  
+  def lowest_scoring_home_team 
+    tally_scores = Hash.new {|h, k| h[k] = [] }
+    games.each do |game|
+      tally_scores[game.home_team_id] <<  game.home_goals.to_i
+    end
+    average_and_lookup(tally_scores, :min)
+  end
+
+  ### HELPER FUNCTION ###
+  def average_and_lookup(tally_scores, selector)
+    tally_scores.each do |key, value|
+      tally_scores[key] = (value.sum / value.size.to_f).round(2)
+    end
+
+    selected_team = teams.find do |team|
+      average_score = tally_scores.max {|a,b| a[1] <=> b[1]} if selector == :max 
+      average_score = tally_scores.min {|a,b| a[1] <=> b[1]} if selector == :min 
+      team.team_id == average_score[0]
+    end
+    selected_team.team_name
   end
 
   def best_offense
