@@ -84,6 +84,10 @@ class StatTracker
     seasons = games.map {|game| game.season}
     seasons.tally
   end
+
+  def count_of_teams
+    @teams.count
+  end
   
   def average_goals_per_game
     per_game_average = games.map do |game|
@@ -93,21 +97,33 @@ class StatTracker
   end
   
   def average_goals_by_season
-    hash = {}
+    all_goals = Hash.new {|h, k| h[k] = [] }
     games.each do |game|
-      if hash[game.season]
-        hash[game.season] <<  sum_of_goals(game)
-      else
-        hash[game.season] = [sum_of_goals(game)]
-      end
+      all_goals[game.season] <<  sum_of_goals(game)
     end
-    hash.each do |key, value|
+
+    all_goals.each do |key, value|
       average = (value.sum / value.size.to_f).round(2)
-      hash[key] = average
+      all_goals[key] = average
     end
   end
     
-  def count_of_teams
-    @teams.count
+
+  def highest_scoring_visitor
+    away_team_scores = Hash.new {|h, k| h[k] = [] }
+    games.each do |game|
+      away_team_scores[game.away_team_id] <<  game.away_goals.to_i
+    end
+
+    away_team_scores.each do |key, value|
+      away_team_scores[key] = (value.sum / value.size.to_f).round(2)
+    end
+
+    highest_score_team = teams.find do |team|
+      highest_average = away_team_scores.max {|a,b| a[1] <=> b[1]}
+      team.team_id == highest_average[0]
+    end
+
+    highest_score_team.team_name
   end
 end
