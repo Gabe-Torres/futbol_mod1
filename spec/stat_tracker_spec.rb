@@ -107,4 +107,10 @@ RSpec.describe 'StatTracker' do
       expect(@stat_tracker.highest_scoring_visitor).to eq "FC Dallas"
     end
   end
+
+  describe '#highest_scoring_home_team' do
+    it "returns Team Name with highest home scores" do
+      expect(@stat_tracker.highest_scoring_home_team).to eq "Reign FC"
+    end
+  end
 end
