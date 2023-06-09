@@ -101,4 +101,10 @@ RSpec.describe 'StatTracker' do
       expect(@stat_tracker.count_of_teams).to eq 32
     end
   end
+
+  describe '#highest_scoring_visitor' do
+    it 'can return highest scoring visitor team' do
+      expect(@stat_tracker.highest_scoring_visitor).to eq "FC Dallas"
+    end
+  end
 end
