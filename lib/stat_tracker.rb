@@ -198,4 +198,18 @@ class StatTracker
     @teams.find { |team| team.team_id == worst_offense_team_id }.team_name
   end
   
+  def winningest_coach(season)
+    season_games = @game_teams.find_all do |game|
+      game.game_id[0..3] == season[0..3]
+    end
+    coach_games = season_games.group_by do |game|
+      game.head_coach
+    end
+    coach_wins = coach_games.each do |coach, games|
+      coach_games[coach] = [((games.find_all { |game| game.result == "WIN" }.count.to_f) / games.count.to_f).round(2)]
+    end
+    most_coach_wins = coach_wins.max_by do |coach, win_percentage|
+      win_percentage
+    end[0]
+  end
 end

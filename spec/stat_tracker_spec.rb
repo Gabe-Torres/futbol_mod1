@@ -138,4 +138,11 @@ RSpec.describe 'StatTracker' do
       expect(@stat_tracker.worst_offense).to eq "Utah Royals FC"
     end
   end
+
+  describe "#winningest_coach" do
+    it "can return the name of the most winning coach" do
+      expect(@stat_tracker.winningest_coach("20132014")).to eq "Claude Julien"
+      expect(@stat_tracker.winningest_coach("20142015")).to eq "Alain Vigneault"
+    end
+  end
 end
