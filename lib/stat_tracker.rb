@@ -199,10 +199,10 @@ class StatTracker
   end
   
   def most_tackles(season)
-    tackle_stats = Hash.new(0) 
+    tackle_stats = Hash.new(0)
     games.each do |game| 
       if game.season == season
-        game_teams.find do |game_team_stat| 
+        game_teams.find_all do |game_team_stat| 
           if game.game_id == game_team_stat.game_id
             tackle_stats[game_team_stat.team_id] += game_team_stat.tackles.to_i
           end
@@ -217,10 +217,10 @@ class StatTracker
   end
   
   def fewest_tackles(season)
-    tackle_stats = Hash.new(0) 
+    tackle_stats = Hash.new(0)
     games.each do |game| 
       if game.season == season
-        game_teams.find do |game_team_stat| 
+        game_teams.find_all do |game_team_stat| 
           if game.game_id == game_team_stat.game_id
             tackle_stats[game_team_stat.team_id] += game_team_stat.tackles.to_i
           end
