@@ -11,6 +11,7 @@ class GameTeam
               :hoa, 
               :result,
               :goals,
+              :tackles,
               :head_coach
   
   def initialize(game_id, 

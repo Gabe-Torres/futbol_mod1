@@ -198,6 +198,42 @@ class StatTracker
     @teams.find { |team| team.team_id == worst_offense_team_id }.team_name
   end
   
+  def most_tackles(season)
+    tackle_stats = Hash.new(0)
+    games.each do |game| 
+      if game.season == season
+        game_teams.find_all do |game_team_stat| 
+          if game.game_id == game_team_stat.game_id
+            tackle_stats[game_team_stat.team_id] += game_team_stat.tackles.to_i
+          end
+        end
+      end
+    end
+    team_with_most_tackles = teams.find do |team|
+      highest_tackles = tackle_stats.max {|a,b| a[1] <=> b[1]} 
+      team.team_id == highest_tackles[0]
+    end
+    team_with_most_tackles.team_name
+  end
+  
+  def fewest_tackles(season)
+    tackle_stats = Hash.new(0)
+    games.each do |game| 
+      if game.season == season
+        game_teams.find_all do |game_team_stat| 
+          if game.game_id == game_team_stat.game_id
+            tackle_stats[game_team_stat.team_id] += game_team_stat.tackles.to_i
+          end
+        end
+      end
+    end
+    team_with_least_tackles = teams.find do |team|
+      least_tackles = tackle_stats.min {|a,b| a[1] <=> b[1]} 
+      team.team_id == least_tackles[0]
+    end
+    team_with_least_tackles.team_name
+  end
+
   def winningest_coach(season)
     season_games = @game_teams.find_all do |game|
       game.game_id[0..3] == season[0..3]

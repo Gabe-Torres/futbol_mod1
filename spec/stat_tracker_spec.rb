@@ -139,6 +139,20 @@ RSpec.describe 'StatTracker' do
     end
   end
 
+  describe '#most_tackles' do
+    it 'can return the team each season with the most tackles' do
+      expect(@stat_tracker.most_tackles("20132014")).to eq "FC Cincinnati"
+      expect(@stat_tracker.most_tackles("20142015")).to eq "Seattle Sounders FC"
+    end
+  end
+
+  describe '#fewest_tackles' do
+    it 'can return the team each season with the fewest tackles' do
+      expect(@stat_tracker.fewest_tackles("20132014")).to eq "Atlanta United"
+      expect(@stat_tracker.fewest_tackles("20142015")).to eq "Orlando City SC"
+      end
+  end
+
   describe "#winningest_coach" do
     it "can return the name of the most winning coach" do
       expect(@stat_tracker.winningest_coach("20132014")).to eq "Claude Julien"
