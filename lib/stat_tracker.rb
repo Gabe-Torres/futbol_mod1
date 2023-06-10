@@ -114,46 +114,18 @@ class StatTracker
     end
     average_and_lookup(tally_scores, :min)
   end
-
+  
   def best_offense
-    team_hash = {}
-    @game_teams.each do |game|
-      if team_hash[game.team_id] == nil
-        team_hash[game.team_id] = [game.goals]
-      else
-        team_hash[game.team_id] += [game.goals]
-      end
-    end
-    
-    team_hash.map do |team, games|
-      team_hash[team] = [(games.map { |game| game.to_f }.sum) / games.count]
-    end
-    
-    best_offense_team_id = team_hash.max_by do |team, avg_goals|
+    best_offense_team_id = avg_goals_by_team.max_by do |team, avg_goals|
       avg_goals
     end[0]
-
     @teams.find { |team| team.team_id == best_offense_team_id }.team_name
   end
-
+  
   def worst_offense
-    team_hash = {}
-    @game_teams.each do |game|
-      if team_hash[game.team_id] == nil
-        team_hash[game.team_id] = [game.goals]
-      else
-        team_hash[game.team_id] += [game.goals]
-      end
-    end
-    
-    team_hash.map do |team, games|
-      team_hash[team] = [(games.map { |game| game.to_f }.sum) / games.count]
-    end
-    
-    worst_offense_team_id = team_hash.min_by do |team, avg_goals|
+    worst_offense_team_id = avg_goals_by_team.min_by do |team, avg_goals|
       avg_goals
     end[0]
-
     @teams.find { |team| team.team_id == worst_offense_team_id }.team_name
   end
   
@@ -194,6 +166,35 @@ class StatTracker
   end
 
   def winningest_coach(season)
+    coach_win_percentages(season).max_by do |coach, win_percentage|
+      win_percentage
+    end[0]
+  end
+
+  def worst_coach(season)
+    coach_win_percentages(season).min_by do |coach, win_percentage|
+      win_percentage
+    end[0]
+  end
+
+  # HELPER METHODS #
+
+  def avg_goals_by_team
+    team_hash = {}
+    @game_teams.each do |game|
+      if team_hash[game.team_id] == nil
+        team_hash[game.team_id] = [game.goals]
+      else
+        team_hash[game.team_id] += [game.goals]
+      end
+    end
+    team_hash.map do |team, games|
+      team_hash[team] = [(games.map { |game| game.to_f }.sum) / games.count]
+    end
+    team_hash
+  end
+
+  def coach_win_percentages(season)
     season_games = @game_teams.find_all do |game|
       game.game_id[0..3] == season[0..3]
     end
@@ -203,12 +204,7 @@ class StatTracker
     coach_wins = coach_games.each do |coach, games|
       coach_games[coach] = [((games.find_all { |game| game.result == "WIN" }.count.to_f) / games.count.to_f).round(2)]
     end
-    most_coach_wins = coach_wins.max_by do |coach, win_percentage|
-      win_percentage
-    end[0]
   end
-
-  # HELPER METHODS #
   
   def game_generator(locations)
     CSV.foreach locations[:games], headers: true, header_converters: :symbol do |row|
