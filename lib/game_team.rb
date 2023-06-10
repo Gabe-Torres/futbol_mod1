@@ -1,49 +1,25 @@
 class GameTeam
   attr_reader :game_id, 
-              :team_id, 
-              :type, 
-              :date_time, 
+              :team_id,
+              :hoa,
               :away_team_id,
               :home_team_id,
               :away_goals,
               :home_goals,
-              :venue, 
-              :hoa, 
               :result,
               :goals,
               :tackles,
               :head_coach
   
-  def initialize(game_id, 
-                team_id, 
-                hoa, 
-                result, 
-                settled_in,
-                head_coach,
-                goals,
-                shots,
-                tackles,
-                pim,
-                powerplayopportunities,
-                powerplaygoals,
-                faceoffwinpercentage,
-                giveaways,
-                takeaways)
+  def initialize(row)
   
-    @game_id = game_id
-    @team_id = team_id
-    @hoa = hoa
-    @result = result
-    @settled_in = settled_in
-    @head_coach = head_coach
-    @goals = goals
-    @shots = shots
-    @tackles = tackles
-    @pim = pim
-    @power_play_opportunities = powerplayopportunities
-    @power_play_goals = powerplaygoals
-    @face_off_win_percentage = faceoffwinpercentage
-    @giveaways = giveaways
-    @takeaways = takeaways
+    @game_id = row[:game_id]
+    @team_id = row[:team_id]
+    @hoa = row[:hoa]
+    @head_coach = row[:head_coach]
+    @goals = row[:goals]
+    @result = row[:result]
+    @shots = row[:shots]
+    @tackles = row[:tackles]
   end
 end

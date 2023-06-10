@@ -19,29 +19,7 @@ class StatTracker
     stat_tracker.game_teams_generator(locations)
     stat_tracker
   end
-  
-  # helper methods
-  
-  def game_generator(locations)
-    CSV.foreach locations[:games], headers: true, header_converters: :symbol do |row|
-      # could just send in the whole row and then pull out what is needed in the def initialize in Game
-      @games << Game.new(row[:game_id], row[:season], row[:type], row[:date_time], row[:away_team_id], row[:home_team_id], row[:away_goals], row[:home_goals], row[:venue])
-    end
-  end
-  
-  def teams_generator(locations)
-    CSV.foreach locations[:teams], headers: true, header_converters: :symbol do |row|
-      @teams << Team.new(row[:team_id], row[:franchiseid], row[:teamname], row[:abbreviation], row[:stadium])
-    end
-  end
-  
-  def game_teams_generator(locations)
-    CSV.foreach locations[:game_teams], headers: true, header_converters: :symbol do |row|
-      @game_teams << GameTeam.new(row[:game_id], row[:team_id], row[:hoa], row[:result], row[:settled_in], row[:head_coach], row[:goals], row[:shots], row[:tackles], row[:pim], row[:powerplayopportunities], row[:powerplaygoals], row[:faceoffwinpercentage], row[:giveaways], row[:takeaways])
-    end
-  end
-  
-  
+
   def percentage_home_wins 
     home_wins = @game_teams.find_all do |game_team|
       game_team.hoa == "home" && game_team.result == "WIN"
@@ -63,10 +41,6 @@ class StatTracker
     (ties.count.to_f / @game_teams.count).round(2)
   end
 
-  def sum_of_goals(game)
-    game.away_goals.to_i + game.home_goals.to_i
-  end
-  
   def highest_total_score
     game = @games.max_by do |game|
       sum_of_goals(game)
@@ -108,7 +82,6 @@ class StatTracker
       all_goals[key] = average
     end
   end
-    
 
   def highest_scoring_visitor
     tally_scores = Hash.new {|h, k| h[k] = [] }
@@ -140,20 +113,6 @@ class StatTracker
       tally_scores[game.home_team_id] <<  game.home_goals.to_i
     end
     average_and_lookup(tally_scores, :min)
-  end
-
-  ### HELPER FUNCTION ###
-  def average_and_lookup(tally_scores, selector)
-    tally_scores.each do |key, value|
-      tally_scores[key] = (value.sum / value.size.to_f).round(2)
-    end
-
-    selected_team = teams.find do |team|
-      average_score = tally_scores.max {|a,b| a[1] <=> b[1]} if selector == :max 
-      average_score = tally_scores.min {|a,b| a[1] <=> b[1]} if selector == :min 
-      team.team_id == average_score[0]
-    end
-    selected_team.team_name
   end
 
   def best_offense
@@ -247,5 +206,42 @@ class StatTracker
     most_coach_wins = coach_wins.max_by do |coach, win_percentage|
       win_percentage
     end[0]
+  end
+
+  # HELPER METHODS #
+  
+  def game_generator(locations)
+    CSV.foreach locations[:games], headers: true, header_converters: :symbol do |row|
+      @games << Game.new(row)
+    end
+  end
+  
+  def teams_generator(locations)
+    CSV.foreach locations[:teams], headers: true, header_converters: :symbol do |row|
+      @teams << Team.new(row)
+    end
+  end
+  
+  def game_teams_generator(locations)
+    CSV.foreach locations[:game_teams], headers: true, header_converters: :symbol do |row|
+      @game_teams << GameTeam.new(row)
+    end
+  end
+  
+  def sum_of_goals(game)
+    game.away_goals.to_i + game.home_goals.to_i
+  end
+  
+  def average_and_lookup(tally_scores, selector)
+    tally_scores.each do |key, value|
+      tally_scores[key] = (value.sum / value.size.to_f).round(2)
+    end
+
+    selected_team = teams.find do |team|
+      average_score = tally_scores.max {|a,b| a[1] <=> b[1]} if selector == :max 
+      average_score = tally_scores.min {|a,b| a[1] <=> b[1]} if selector == :min 
+      team.team_id == average_score[0]
+    end
+    selected_team.team_name
   end
 end
